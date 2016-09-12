@@ -1,4 +1,4 @@
-customer=[]
+names=[]
 
 while(1):
     r=str(input("Enter name (yes/no) : "))
@@ -13,5 +13,5 @@ while(1):
 
 print('Following are the names : ')
 
-for cust in customer:
-    print(cust["name"],cust['last'])
+for i in names:
+    print(i["name"],i['last'])
