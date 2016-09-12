@@ -2,13 +2,7 @@
 number=int(input("Enter no of digits in series:"))
 
 def fibonnaci(number):
-    if number==0:
-        return 0
 
-    elif number==1:
-        return 1
-
-    else :
         a = 0
         b = 1
         print(a)
