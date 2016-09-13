@@ -6,7 +6,7 @@ while(1):
 
     if r=='y':
         name,last=input("Enter name (firstname lastname) : ").split(" ")
-        customer.append({"name":name,"last":last})
+        names.append({"name":name,"last":last})
 
     else :
         break
