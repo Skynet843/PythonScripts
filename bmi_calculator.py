@@ -1,4 +1,4 @@
-# BMI calculator
+# BMI calculator :)
 
 def BMI_calculator(k,m):
 
