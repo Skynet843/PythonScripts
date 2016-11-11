@@ -12,6 +12,7 @@ def ifphonenumber(no):
 
 	return True
 
+
 message = input()
 for i in range(len(message)):
 	temp = message[i:i+10]
