@@ -2,7 +2,7 @@ import getpass
 import os
 import sys,pyperclip
 
-# create two files names 'database.txt' and "pass.txt" 
+# create two files named  'database.txt' and "pass.txt" 
 
 passwords = {}
 maspass = " "
