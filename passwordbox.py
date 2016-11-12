@@ -22,7 +22,7 @@ if os.stat("pass.txt").st_size == 0:
         print("Password doesn't match Try again.")
 
 if len(sys.argv) <2:
-    print("You forget to arguments in command line")
+    print("You forget to add arguments in command line")
     sys.exit()
 
 p = open("pass.txt")
@@ -40,10 +40,6 @@ if not len(line.strip()) == 0 :
             if ':' in item:
                 key,value = item.split(':', 1)
                 data[key]=value
-
-if len(sys.argv) <2:
-    print("You forget to add arguments in command line")
-    sys.exit()
 
 if sys.argv[1]=='add':
     master = getpass.getpass("Enter master password: ")
@@ -65,7 +61,7 @@ if sys.argv[1]=='add':
             f.write('%s:%s\n' % (key, value))
 
         status = input()
-        if(status=='y'):
+        if(status=='y' or status=='Y'):
             continue
         else:
             break
