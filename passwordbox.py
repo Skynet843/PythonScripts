@@ -7,11 +7,9 @@ import sys,pyperclip
 passwords = {}
 maspass = " "
 
-if os.stat("pass.txt").st_size == 0:
-    print("Enter a master password : ",end="")
-    maspass1 = input()
-    print("Confirm passowrd: ",end="")
-    maspass2 = input()
+def changemaster():
+    maspass1 = getpass.getpass("Enter a master password : ")
+    maspass2 = getpass.getpass("Confirm passowrd: ")
 
     if(maspass1==maspass2):
         maspass = maspass1
@@ -20,30 +18,46 @@ if os.stat("pass.txt").st_size == 0:
 
     else:
         print("Password doesn't match Try again.")
+        exit()
 
+def checkpassfile():
+    p = open("pass.txt")
+    linep = p.readline()
+    linenew,pas = linep.split('-')
+    maspass = pas
+    return maspass
+
+if os.stat("pass.txt").st_size == 0:
+    changemaster()
+    
 if len(sys.argv) <2:
     print("You forget to add arguments in command line")
     sys.exit()
 
-p = open("pass.txt")
-linep = p.readline()
-linenew,pas = linep.split('-')
-maspass = pas
+if sys.argv[1]=='mchange':
+    master = getpass.getpass("Enter current master password: ")
+    if checkpassfile()==master:
+        changemaster()
+        print("Password succesfully changed")
+        exit()
+    else:
+        print("You entered wrong password")
+        exit()
 
 f = open("database.txt")
 line = f.readline()
 
 if not len(line.strip()) == 0 :
-    data = passwords
     with open('database.txt') as raw_data:
         for item in raw_data:
             if ':' in item:
                 key,value = item.split(':', 1)
-                data[key]=value
+                passwords[key]=value
+
 
 if sys.argv[1]=='add':
     master = getpass.getpass("Enter master password: ")
-    if master != maspass:
+    if master != checkpassfile():
         print("Wrong passowrd")
         exit()
 
@@ -69,7 +83,7 @@ if sys.argv[1]=='add':
 else:
     account = sys.argv[1]
     master = getpass.getpass("Enter master password: ")
-    if master == maspass:
+    if master == checkpassfile():
         if account in passwords:
             pyperclip.copy(passwords[account])
             print("Password for your ",account,"is coppied to clipboard")
@@ -77,3 +91,4 @@ else:
             print("We dont have password for ",account)
     else:
         print("Wrong password")
+
