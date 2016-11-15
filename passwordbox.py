@@ -7,6 +7,34 @@ import sys,pyperclip
 passwords = {}
 maspass = " "
 
+def help():
+    print("\tFirstly create two files named  \"database.txt\" and \"pass.txt\" in same directory")
+    print("python3 \'filename\' add       \t --- \t to setup master password(first time users)\n\t\t\t\t\t and add an acount")
+    print("python3 \'filename\' mchange   \t --- \t to change master password")
+    print("python3 \'filename\' add       \t --- \t to add new account")
+    print("python3 \'filename\' del       \t --- \t to delete existing account")
+    print("python3 \'filename\' mchange   \t --- \t to change master password")
+    print("python3 \'filename\' update    \t --- \t to change password of existing account")
+
+
+def updatedatabase():
+    f= open('database.txt', 'w')
+    for key, value in passwords.items():
+        f.write('%s:%s\n' % (key, value))
+
+
+def update(acc):
+    print("Enter new password for",acc,": ",end='')
+    new = input()
+    passwords[acc] = new
+    print("Password succesfully updated")
+    updatedatabase()
+    exit()
+
+def deleteaccount(account):
+    del passwords[account]
+    print("Account succesfully deleted")
+
 def changemaster():
     maspass1 = getpass.getpass("Enter a master password : ")
     maspass2 = getpass.getpass("Confirm passowrd: ")
@@ -32,6 +60,7 @@ if os.stat("pass.txt").st_size == 0:
     
 if len(sys.argv) <2:
     print("You forget to add arguments in command line")
+    help()
     sys.exit()
 
 if sys.argv[1]=='mchange':
@@ -44,6 +73,10 @@ if sys.argv[1]=='mchange':
         print("You entered wrong password")
         exit()
 
+if sys.argv[1]=='-help':
+    help()
+    exit()
+
 f = open("database.txt")
 line = f.readline()
 
@@ -53,6 +86,25 @@ if not len(line.strip()) == 0 :
             if ':' in item:
                 key,value = item.split(':', 1)
                 passwords[key]=value
+
+if sys.argv[1]=='del':
+    print("Enter account: ",end='')
+    acc = input()
+    temp = getpass.getpass("Enter master password: ")
+    if temp != checkpassfile():
+        print("Wrong passowrd")
+        exit()
+    deleteaccount(acc)
+    updatedatabase()
+    exit()
+
+if sys.argv[1]=='update':
+    master = getpass.getpass("Enter master password: ")
+    if master != checkpassfile():
+        print("Wrong passowrd")
+        exit()
+    acc = input("Enter account: ")
+    update(acc)
 
 
 if sys.argv[1]=='add':
@@ -69,11 +121,7 @@ if sys.argv[1]=='add':
         passwords.update({newacc:newpass})
         print("Do you want to add more(y/n): ",end='')
         passwords.update({newacc:newpass})
-
-        f= open('database.txt', 'w')
-        for key, value in passwords.items():
-            f.write('%s:%s\n' % (key, value))
-
+        updatedatabase()
         status = input()
         if(status=='y' or status=='Y'):
             continue
@@ -86,7 +134,7 @@ else:
     if master == checkpassfile():
         if account in passwords:
             pyperclip.copy(passwords[account])
-            print("Password for your ",account,"is coppied to clipboard")
+            print("Password for your ",account,"is copied to clipboard")
         else:
             print("We dont have password for ",account)
     else:
