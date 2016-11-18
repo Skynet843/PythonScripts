@@ -8,13 +8,13 @@ passwords = {}
 maspass = " "
 
 def help():
-    print("\tFirstly create two files named  \"database.txt\" and \"pass.txt\" in same directory")
-    print("python3 \'filename\' add       \t --- \t to setup master password(first time users)\n\t\t\t\t\t and add an acount")
-    print("python3 \'filename\' mchange   \t --- \t to change master password")
-    print("python3 \'filename\' add       \t --- \t to add new account")
-    print("python3 \'filename\' del       \t --- \t to delete existing account")
-    print("python3 \'filename\' mchange   \t --- \t to change master password")
-    print("python3 \'filename\' update    \t --- \t to change password of existing account")
+    print("NOTE:Firstly create two files named  \"database.txt\" and \"pass.txt\" in same directory")
+    print("add       \t ---  to setup master password(first time users)\n\t\t\t\t\t and add an account")
+    print("mchange   \t ---  to change master password")
+    print("add       \t ---  to add new account")
+    print("del       \t ---  to delete existing account")
+    print("mchange   \t ---  to change master password")
+    print("update    \t ---  to change password of existing account")
 
 
 def updatedatabase():
@@ -27,17 +27,17 @@ def update(acc):
     print("Enter new password for",acc,": ",end='')
     new = input()
     passwords[acc] = new
-    print("Password succesfully updated")
+    print("Password successfully updated")
     updatedatabase()
     exit()
 
 def deleteaccount(account):
     del passwords[account]
-    print("Account succesfully deleted")
+    print("Account successfully deleted")
 
 def changemaster():
     maspass1 = getpass.getpass("Enter a master password : ")
-    maspass2 = getpass.getpass("Confirm passowrd: ")
+    maspass2 = getpass.getpass("Confirm password: ")
 
     if(maspass1==maspass2):
         maspass = maspass1
@@ -54,28 +54,28 @@ def checkpassfile():
     linenew,pas = linep.split('-')
     maspass = pas
     return maspass
-
-if os.stat("pass.txt").st_size == 0:
-    changemaster()
     
+if sys.argv[1]=='--help':
+    help()
+    exit()
+
 if len(sys.argv) <2:
     print("You forget to add arguments in command line")
     help()
     sys.exit()
 
+if os.stat("pass.txt").st_size == 0:
+    changemaster()
+    
 if sys.argv[1]=='mchange':
     master = getpass.getpass("Enter current master password: ")
     if checkpassfile()==master:
         changemaster()
-        print("Password succesfully changed")
+        print("Password successfully changed")
         exit()
     else:
         print("You entered wrong password")
         exit()
-
-if sys.argv[1]=='-help':
-    help()
-    exit()
 
 f = open("database.txt")
 line = f.readline()
@@ -92,7 +92,7 @@ if sys.argv[1]=='del':
     acc = input()
     temp = getpass.getpass("Enter master password: ")
     if temp != checkpassfile():
-        print("Wrong passowrd")
+        print("Wrong password")
         exit()
     deleteaccount(acc)
     updatedatabase()
@@ -101,7 +101,7 @@ if sys.argv[1]=='del':
 if sys.argv[1]=='update':
     master = getpass.getpass("Enter master password: ")
     if master != checkpassfile():
-        print("Wrong passowrd")
+        print("Wrong password")
         exit()
     acc = input("Enter account: ")
     update(acc)
@@ -110,7 +110,7 @@ if sys.argv[1]=='update':
 if sys.argv[1]=='add':
     master = getpass.getpass("Enter master password: ")
     if master != checkpassfile():
-        print("Wrong passowrd")
+        print("Wrong password")
         exit()
 
     while(1):
@@ -123,7 +123,7 @@ if sys.argv[1]=='add':
         passwords.update({newacc:newpass})
         updatedatabase()
         status = input()
-        if(status=='y' or status=='Y'):
+        if(status.lower() == 'y'):
             continue
         else:
             break
@@ -134,9 +134,8 @@ else:
     if master == checkpassfile():
         if account in passwords:
             pyperclip.copy(passwords[account])
-            print("Password for your ",account,"is copied to clipboard")
+            print("Password for your",account,"is copied to clipboard")
         else:
-            print("We dont have password for ",account)
+            print("We don't have password for ",account)
     else:
         print("Wrong password")
-
