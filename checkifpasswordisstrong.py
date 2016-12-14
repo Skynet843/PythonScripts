@@ -38,7 +38,6 @@ if low.search(password) is None:
 	print("Your password should contain lowercase leters")
 	i-=1
 
-
 if i==6:
 	print("Strong password")
 
