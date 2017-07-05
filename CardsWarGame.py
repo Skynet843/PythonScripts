@@ -140,7 +140,7 @@ while(1):
 if(p1.isempty()):
     print("\nComputer won")
 else:
-    print("\n" + p1name + " won")
-
+    print(p1,end='')
+    print(" won")
 
 print("Rounds : {}\nWars : {}".format(rounds, wars))
