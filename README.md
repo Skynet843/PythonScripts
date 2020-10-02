@@ -1,2 +1,2 @@
 
-Some python programs
+Some python programs make life easier
